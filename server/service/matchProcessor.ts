@@ -19,22 +19,34 @@ export class MatchProcessor extends Processor<IMatch> {
      */
     public async collect(): Promise<IMatch[]> {
         try {
+            // collect group phase matches
+            const groupPhaseResponse: any = await axios.get(
+                'https://www.fifa.com/worldcup/matches/#groupphase',
+            );
+            const groupPhaseMatchList: IMatch[] = this.collectMatchList(groupPhaseResponse);
+
+            // collect knockout phase matches
+            const knockoutPhaseResponse: any = await axios.get(
+                'https://www.fifa.com/worldcup/matches/#knockoutphase',
+            );
+            const knockoutPhaseMatchList: IMatch[] = this.collectMatchList(knockoutPhaseResponse);
+
+            // remove duplicates if any
             const matchList: IMatch[] = [];
-            const response: any = await axios.get('https://www.fifa.com/worldcup/matches');
-            const $ = cheerio.load(response.data);
+            groupPhaseMatchList
+                .concat(knockoutPhaseMatchList)
+                .reduce((listMap: any, match: IMatch) => {
+                    // create a unique key for elimination of duplicates
+                    const key: string = `${match.dateTime}_${match.stageName}_${
+                        match.awayTeam.code
+                    }_${match.homeTeam.code}`;
 
-            // determined matches
-            $('.fi-mu-list[data-matchesdate]').each((i, elem) =>
-                matchList.push(this.createModel($, elem)),
-            );
-
-            // to be determined matches
-            $('.fi-mu-list[data-idstage]').each((i, elem) =>
-                matchList.push(this.createModel($, elem)),
-            );
-
-            // update match models from teamMap
-            this.updateMatches(matchList);
+                    if (!listMap[key]) {
+                        listMap[key] = match;
+                        matchList.push(match);
+                    }
+                    return listMap;
+                });
 
             // save the match list
             this.save(matchList);
@@ -177,5 +189,25 @@ export class MatchProcessor extends Processor<IMatch> {
                 match.homeTeam.win = '0';
             }
         });
+    }
+
+    private collectMatchList(response: any): IMatch[] {
+        const matchList: IMatch[] = [];
+        const $ = cheerio.load(response.data);
+
+        // determined matches
+        $('.fi-mu-list[data-matchesdate] > a.fi-mu__link').each((i, elem) =>
+            matchList.push(this.createModel($, elem)),
+        );
+
+        // to be determined matches
+        $('.fi-mu-list[data-idstage] > a.fi-mu__link').each((i, elem) =>
+            matchList.push(this.createModel($, elem)),
+        );
+
+        // update match models from teamMap
+        this.updateMatches(matchList);
+
+        return matchList;
     }
 }
