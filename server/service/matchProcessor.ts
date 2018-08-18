@@ -95,7 +95,7 @@ export class MatchProcessor extends Processor<IMatch> {
                 penalties: awayTeamPenalties,
             },
             dateTime: scrapper.findAttribute('.fi-mu__info__datetime', 'data-utcdate'),
-            gameStatus: gameStatus,
+            gameStatus,
             homeTeam: {
                 code: homeTeamCode,
                 country: homeTeamCountry,
