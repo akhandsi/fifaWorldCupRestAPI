@@ -10,6 +10,10 @@ export class StandingProcessor extends Processor<IStanding> {
         super(DataFilePath.standings);
     }
 
+    /**
+     * Collect standings by going through the groups list
+     * @returns list of team standings
+     */
     public async collect(): Promise<IStanding[]> {
         try {
             const standings: IStanding[] = [];
@@ -31,6 +35,10 @@ export class StandingProcessor extends Processor<IStanding> {
         }
     }
 
+    /**
+     * Create a standing model by scrapping html
+     * @returns team standing
+     */
     public createModel($: any, elem: any): IStanding {
         const scrapper: Crawler = new Crawler($, elem);
 

@@ -13,6 +13,10 @@ export class MatchProcessor extends Processor<IMatch> {
         this.teamMap = teamMap;
     }
 
+    /**
+     * Collect matches by going through the matches list
+     * @returns list of matches
+     */
     public async collect(): Promise<IMatch[]> {
         try {
             const matchList: IMatch[] = [];
@@ -30,7 +34,7 @@ export class MatchProcessor extends Processor<IMatch> {
             );
 
             // update match models from teamMap
-            this.setMatches(matchList);
+            this.updateMatches(matchList);
 
             // save the match list
             this.save(matchList);
@@ -42,6 +46,10 @@ export class MatchProcessor extends Processor<IMatch> {
         }
     }
 
+    /**
+     * Create a match model by scrapping html
+     * @returns match
+     */
     public createModel($: any, elem: any): IMatch {
         const scrapper: Crawler = new Crawler($, elem);
 
@@ -125,7 +133,11 @@ export class MatchProcessor extends Processor<IMatch> {
         return item;
     }
 
-    private setMatches(matches: IMatch[]): void {
+    /**
+     * Update match details based on teamMap
+     * @param matches
+     */
+    private updateMatches(matches: IMatch[]): void {
         const updateTeam = (teamModel: ITeam, dto: ITeam, setDefaults: boolean = false) => {
             teamModel.diffGoal = dto.diffGoal;
             teamModel.draw = dto.draw;

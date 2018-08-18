@@ -3,6 +3,7 @@ export enum DataFilePath {
     standings = 'server/data/standings.json',
     statistics = 'server/data/statistics.json',
     teams = 'server/data/teams.json',
+    tournamentInfo = 'server/data/tournamentInfo.json',
 }
 
 export interface IMessage {
@@ -66,4 +67,10 @@ export interface IMatch extends IModel {
     time: string;
     venue: string;
     winnerCode?: string;
+}
+
+export interface ITournamentInfo extends IModel {
+    endDate: string | null;
+    startDate: string | null;
+    title: string | null;
 }

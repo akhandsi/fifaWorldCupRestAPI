@@ -37,7 +37,7 @@ describe('HomeController', () => {
         expect(instance.crawlingInProgress).to.be.true;
     });
 
-    it('crawl', done => {
+    it('collect', done => {
         const mockData = [
             {
                 code: 'a',
@@ -52,7 +52,7 @@ describe('HomeController', () => {
         const spy = stub.returns(Promise.resolve(mockData));
 
         instance
-            .crawl()
+            .collect()
             .then(result => {
                 expect(result).to.equals(mockData);
             })
@@ -62,7 +62,7 @@ describe('HomeController', () => {
     });
 
     it('route', done => {
-        app.get('/rest/home/crawl')
+        app.post('/rest/home/collect')
             .expect(200)
             .end((err, response: any) => {
                 if (err) {

@@ -5,11 +5,19 @@ export class TeamProcessor extends Processor<ITeam> {
     private teamMap: any = {};
     private standings: IStanding[];
 
+    /**
+     * Teams are collected from standings
+     * @param standings
+     */
     constructor(standings: IStanding[]) {
-        super(DataFilePath.matches);
+        super(DataFilePath.teams);
         this.standings = standings;
     }
 
+    /**
+     * Collect teams by going through the standings
+     * @returns list of teams
+     */
     public async collect(): Promise<ITeam[]> {
         let teams: ITeam[] = [];
         this.standings.forEach(standing => (teams = teams.concat(standing.teams)));
@@ -21,6 +29,10 @@ export class TeamProcessor extends Processor<ITeam> {
         return teams;
     }
 
+    /**
+     * Getter for teamMap
+     * @returns teamMap
+     */
     public getTeamMap(): any {
         return this.teamMap;
     }

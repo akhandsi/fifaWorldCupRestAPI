@@ -2,7 +2,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import { IModel } from '../models/types';
 
 export abstract class Processor<M extends IModel> {
-    constructor(private readonly filePath: string) {}
+    protected constructor(private readonly filePath: string) {}
 
     public abstract async collect(): Promise<M[]>;
 

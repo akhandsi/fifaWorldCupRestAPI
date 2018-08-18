@@ -13,6 +13,10 @@ export class StatisticsProcessor extends Processor<IStatistics> {
         this.teamMap = teamMap;
     }
 
+    /**
+     * Collect statistics by going through the players list of goals scored and saved
+     * @returns list of player statistics
+     */
     public async collect(): Promise<IStatistics[]> {
         try {
             let $;
@@ -67,6 +71,10 @@ export class StatisticsProcessor extends Processor<IStatistics> {
         }
     }
 
+    /**
+     * Create a player who scored goals by scrapping html
+     * @returns player
+     */
     private createGoalScorerModel($: any, elem: any): IPlayer[] {
         const scrapper: Crawler = new Crawler($, elem);
 
@@ -100,6 +108,10 @@ export class StatisticsProcessor extends Processor<IStatistics> {
         return players;
     }
 
+    /**
+     * Create a player who saved goals by scrapping html
+     * @returns player
+     */
     private createGoalSaverModel($: any, elem: any): IPlayer[] {
         const scrapper: Crawler = new Crawler($, elem);
         const players: IPlayer[] = [];

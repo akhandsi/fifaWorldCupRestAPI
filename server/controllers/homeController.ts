@@ -1,4 +1,4 @@
-import { Controller, Get } from '@tsed/common';
+import { Controller, Post } from '@tsed/common';
 import { CronJob } from 'cron';
 import * as express from 'express';
 import { ITeamInfo } from '../models/types';
@@ -14,8 +14,8 @@ export class HomeController {
         this.crawlSetup();
     }
 
-    @Get('/crawl')
-    public async crawl(req: express.Request, res: express.Response): Promise<ITeamInfo[]> {
+    @Post('/collect')
+    public async collect(req: express.Request, res: express.Response): Promise<ITeamInfo[]> {
         return await WebCrawlerService.collect();
     }
 
