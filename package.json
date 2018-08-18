@@ -4,8 +4,8 @@
   "main": "server/server.ts",
   "license": "MIT",
   "scripts": {
-    "start": "npm run build:live",
-    "build:live": "nodemon --watch 'src/**/*.ts' --ignore 'node_modules/**/*' --exec ./node_modules/.bin/ts-node -- ./server/server.ts",
+    "start": "./node_modules/.bin/ts-node -- ./server/server.ts",
+    "watch": "nodemon --watch 'src/**/*.ts' --ignore 'node_modules/**/*' --exec ./node_modules/.bin/ts-node -- ./server/server.ts",
     "test": "mocha --reporter spec --compilers ts:ts-node/register '**/*.spec.ts'"
   },
   "author": "Akhand Singh <akhandsingh68@gmail.com>",
