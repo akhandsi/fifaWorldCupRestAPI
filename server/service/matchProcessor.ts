@@ -50,9 +50,6 @@ export class MatchProcessor extends Processor<IMatch> {
                     return listMap;
                 });
 
-            // sort matchList by date
-            matchList.sort();
-
             // save the match list
             this.save(matchList);
 
