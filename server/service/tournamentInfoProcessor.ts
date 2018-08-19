@@ -64,7 +64,7 @@ export class TournamentInfoProcessor extends Processor<ITournamentInfo> {
         return {
             endDate: `${tournamentDates[1]} ${yearMatch[0]}`,
             startDate: `${tournamentDates[0]} ${yearMatch[0]}`,
-            title: tournamentTitle,
+            title: tournamentTitle.replace('™', ''),
         };
     }
 }

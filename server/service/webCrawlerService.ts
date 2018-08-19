@@ -36,7 +36,7 @@ export class WebCrawlerService {
 
         const currentDate: Date = new Date();
         const tournamentEndDate: Date = new Date(tournamentInfo[0].endDate || '');
-        return true; // tournamentEndDate > currentDate;
+        return tournamentEndDate > currentDate;
     }
 
     public static async collect(): Promise<ITeamInfo[]> {

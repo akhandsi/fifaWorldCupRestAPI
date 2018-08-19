@@ -23,13 +23,13 @@ export class MatchProcessor extends Processor<IMatch> {
             const groupPhaseResponse: any = await axios.get(
                 'https://www.fifa.com/worldcup/matches/#groupphase',
             );
-            const groupPhaseMatchList: IMatch[] = this.collectMatchList(groupPhaseResponse);
+            const groupPhaseMatchList: IMatch[] = this.createMatchList(groupPhaseResponse);
 
             // collect knockout phase matches
             const knockoutPhaseResponse: any = await axios.get(
                 'https://www.fifa.com/worldcup/matches/#knockoutphase',
             );
-            const knockoutPhaseMatchList: IMatch[] = this.collectMatchList(knockoutPhaseResponse);
+            const knockoutPhaseMatchList: IMatch[] = this.createMatchList(knockoutPhaseResponse);
 
             // remove duplicates if any
             const matchList: IMatch[] = [];
@@ -41,12 +41,17 @@ export class MatchProcessor extends Processor<IMatch> {
                         match.awayTeam.code
                     }_${match.homeTeam.code}`;
 
+                    // prevent adding duplicate matches
                     if (!listMap[key]) {
                         listMap[key] = match;
                         matchList.push(match);
                     }
+
                     return listMap;
                 });
+
+            // sort matchList by date
+            matchList.sort();
 
             // save the match list
             this.save(matchList);
@@ -191,7 +196,12 @@ export class MatchProcessor extends Processor<IMatch> {
         });
     }
 
-    private collectMatchList(response: any): IMatch[] {
+    /**
+     * Create match list for a given response
+     * @param response
+     * @returns match list
+     */
+    private createMatchList(response: any): IMatch[] {
         const matchList: IMatch[] = [];
         const $ = cheerio.load(response.data);
 
