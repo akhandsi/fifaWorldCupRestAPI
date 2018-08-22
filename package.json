@@ -9,6 +9,10 @@
     "test": "mocha --reporter spec --compilers ts:ts-node/register '**/*.spec.ts'"
   },
   "author": "Akhand Singh <akhandsingh68@gmail.com>",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/akhandsi/fifaWorldCupRestAPI.git"
+  },
   "engines": {
     "node": ">=8.9.4"
   },
