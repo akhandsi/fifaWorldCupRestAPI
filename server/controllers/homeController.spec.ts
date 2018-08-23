@@ -1,7 +1,6 @@
 import { ExpressApplication, InjectorService } from '@tsed/common';
 import { bootstrap, inject } from '@tsed/testing';
 import * as Chai from 'chai';
-import { CronJob } from 'cron';
 import * as mocha from 'mocha';
 import * as Sinon from 'Sinon';
 import * as SinonChai from 'sinon-chai';
@@ -18,14 +17,12 @@ Chai.use(SinonChai);
 describe('HomeController', () => {
     let instance: any;
     let app: any;
-    let crontabStub: any;
     before(bootstrap(Server));
 
     before(
         inject(
             [ExpressApplication, InjectorService],
             (expressApplication: ExpressApplication, injectorService: InjectorService) => {
-                crontabStub = Sinon.stub(CronJob.prototype, 'start');
                 instance = InjectorService.invoke(HomeController);
                 app = SuperTest(expressApplication);
             },
@@ -33,7 +30,6 @@ describe('HomeController', () => {
     );
 
     it('initialization', () => {
-        Sinon.assert.calledWith(crontabStub);
         expect(instance.crawlingInProgress).to.be.true;
     });
 
